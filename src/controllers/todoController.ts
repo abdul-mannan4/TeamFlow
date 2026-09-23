@@ -5,7 +5,7 @@ export const getTodos=async(
     limit?:number
 ):Promise<Todos[]>=>{
     const URL=page && limit ? `https://jsonplaceholder.typicode.com/todos?_page=${page}&_limit=${limit}` :
-    "https:jsonplaceholder.typicode.com/todos"
+    "https://jsonplaceholder.typicode.com/todos"
 
     const response=await fetch(
         URL

@@ -12,7 +12,26 @@ import { fetchAlbums } from "@/src/redux/features/albums/albumThunk";
 import { fetchPhotos } from "@/src/redux/features/photos/photoThunk";
 import { fetchComments } from "@/src/redux/features/comments/commentThunk";
 
+const getGreeting = () => {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 12) {
+    return "Good morning";
+  }
+
+  if (hour >= 12 && hour < 17) {
+    return "Good afternoon";
+  }
+
+  if (hour >= 17 && hour < 21) {
+    return "Good evening";
+  }
+
+  return "Good night";
+};
+
 export default function Dashboard() {
+  const grettings=getGreeting();
   const dispatch = useAppDispatch();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -37,7 +56,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col p-4 sm:p-6 gap-5 sm:gap-6  w-full">
       <PageHeader
-        title="Good morning, Team"
+        title={`${grettings}, Team`}
         subtitle="Here's what's happening across your workspace."
         action={
           <button
