@@ -78,116 +78,117 @@ const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
 
 }
   return (
-    <div className='fixed inset-0 flex items-center justify-center p-4'>
-        <div className='absolute inset-0 bg-black/40'>
-        </div>
-        <div className='relative bg-white rounded-xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto'>
-            <div className='flex items-center justify-between px-6 py-4 border-b border-slate-100'>
-                <h2 className='text-base font-semibold text-slate-900'>Add Member</h2>
-                    <XBtn setIsOpen={setIsOpen} />
+    <div className='fixed inset-0 flex items-center justify-center p-3 sm:p-4 z-50'>
+        <div className='absolute inset-0 bg-black/40' onClick={() => setIsOpen(false)} />
+        <div className='relative bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[88vh] flex flex-col overflow-hidden'>
+            <div className='flex items-center justify-between px-5 py-3 sm:px-6 sm:py-3.5 border-b border-slate-100 shrink-0'>
+                <h2 className='text-sm sm:text-base font-semibold text-slate-900'>Add Member</h2>
+                <XBtn setIsOpen={setIsOpen} />
             </div>
-            <div className='px-6 py-5'>
-                <form onSubmit={handleSubmit} className='space-y-4'>
-                    <div className='space-y-4'>
-                        <div className='grid grid-cols-2 gap-3'>
+            <div className='px-5 py-3.5 sm:px-6 sm:py-4 overflow-y-auto flex-1'>
+                <form onSubmit={handleSubmit} className='space-y-3 sm:space-y-3.5'>
+                    <div className='space-y-3'>
+                        <div className='grid grid-cols-2 gap-2.5 sm:gap-3'>
                             <div className='col-span-2'>
-                                <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>Full Name</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>Full Name</label>
                                 <input type="text"
                                  name="name" 
                                  value={formData.name} 
-                                required
+                                 required
                                  onChange={handleChange}   
-                                className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' placeholder='Leanne Graham'/>
+                                 className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' placeholder='Leanne Graham'/>
                             </div>
                             <div>
-                                <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>Email</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>Email</label>
                                 <input 
                                 name="email"
                                 value={formData.email}
                                 required
                                 onChange={handleChange}
-                                className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
+                                className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="email" 
                                 placeholder='leanne@example.com'/>
                             </div>
                             <div>
-                                <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>Phone</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>Phone</label>
                                 <input
                                 name='phone'
                                 value={formData.phone}
                                 required
                                 onChange={handleChange}
-                                 className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
+                                 className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
                                  placeholder='+1 555-000-1234'/>
                             </div>
                             <div>
-                                <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>Website</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>Website</label>
                                 <input
                                 name='website'
                                 value={formData.website}
                                 required
                                 onChange={handleChange}
-                                 className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text"  placeholder='example.com'/>
+                                 className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text"  placeholder='example.com'/>
                             </div>
                             <div>
-                                <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>UserName</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>UserName</label>
                                 <input
                                 name='username'
                                 value={formData.username}
                                 required
                                 onChange={handleChange}
-                                className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text"  placeholder='leanne'/>
+                                className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text"  placeholder='leanne'/>
                             </div>
                         </div>
-                        <p className='text-xs font-semibold text-slate-500 uppercase tracking-wider pt-1'>
+                        <p className='text-[11px] font-semibold text-slate-400 uppercase tracking-wider pt-0.5'>
                             Address
                         </p>
-                        <div className='grid grid-cols-2 gap-3'>
+                        <div className='grid grid-cols-2 gap-2.5 sm:gap-3'>
                               <div className='col-span-2'>
-                                <label  className='block text-xs font-medium text-slate-700 mb-1.5'>Street</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>Street</label>
                                 <input type="text"
                                 name='street'
                                 value={formData.address.street}
                                 required  
                                 onChange={handleNestedChange}
-                                className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                                className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500'
                                  placeholder='123 Main St'/>
                             </div>
                             <div>
-                                <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>City</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>City</label>
                                 <input
                                 name='city'
                                 value={formData.address.city}
                                 required
                                 onChange={handleNestedChange}
-                                className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
+                                className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
                                 placeholder='New York'/>
                             </div>
                              <div>
-                                <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>Zip Code</label>
+                                <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>Zip Code</label>
                                 <input 
                                 name='zipCode'
                                 value={formData.address.zipCode}
                                 required
                                 onChange={handleNestedChange}
-                                className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
+                                className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
                                 placeholder='10001'/>
                             </div>
                         </div>
-                          <p className='text-xs font-semibold text-slate-500 uppercase tracking-wider pt-1'>
+                          <p className='text-[11px] font-semibold text-slate-400 uppercase tracking-wider pt-0.5'>
                             Company
                         </p>
                         <div>
-                            <label htmlFor="" className='block text-xs font-medium text-slate-700 mb-1.5'>Company Name</label>
+                            <label className='block text-[11px] sm:text-xs font-medium text-slate-700 mb-1'>Company Name</label>
                             <input
                             name='company'
                             value={formData.company.name}
                             required
                             onChange={handleCompanyChange}
-                            className='w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
+                            className='w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500' type="text" 
                             placeholder='Acme Corp'/>
                         </div>
                     </div>
-                    <CreationBtn setIsOpen={setIsOpen} loading={loading} />
+                    <div className='pt-1'>
+                        <CreationBtn setIsOpen={setIsOpen} loading={loading} />
+                    </div>
                 </form>
             </div>
         </div>
