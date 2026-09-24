@@ -4,7 +4,7 @@ import { useUsers } from '@/src/hooks/useUsers'
 import MemberCard from './memberCard'
 import type { User } from '@/src/types/users'
 import { ChevronLeft,ChevronRight } from 'lucide-react'
-
+import { MemberRowSkeleton } from '../../SharedComponents/Skeletons/skeletons'
 
 export default function MemberSection({
   users,
@@ -14,6 +14,7 @@ export default function MemberSection({
   totalPages,
   currentPage,
   setCurrentPage,
+  loading,
 }: {
   users: User[];
   startingIndex?: number;
@@ -22,6 +23,7 @@ export default function MemberSection({
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  loading?: boolean;
 }) {
   const firstPage = Math.max(1, Math.min(currentPage, totalPages - 1));
   const pageNumber = [firstPage, firstPage + 1].filter((p) => p <= totalPages);
@@ -40,9 +42,21 @@ export default function MemberSection({
               <th className='px-4 sm:px-5 2xl:px-6 py-3.5 2xl:py-4.5 text-xs 2xl:text-sm font-bold text-slate-500 uppercase tracking-wider text-right'>Action</th>
             </tr>
           </thead>
-          {users.map((user, index) => (
-            <MemberCard key={index} user={user} />
-          ))}
+          {loading && users.length === 0 ? (
+            Array.from({ length: 5 }).map((_, i) => <MemberRowSkeleton key={i} />)
+          ) : users.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={6} className="py-12 text-center text-sm text-slate-500 font-medium">
+                  No members found
+                </td>
+              </tr>
+            </tbody>
+          ) : (
+            users.map((user, index) => (
+              <MemberCard key={user.id || index} user={user} />
+            ))
+          )}
         </table>
       </div>
 

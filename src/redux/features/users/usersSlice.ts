@@ -38,7 +38,7 @@ const userSlice=createSlice({
         })
         builder.addCase(addUser.fulfilled,(state,action)=>{
             state.loading=false
-            state.data.push(action.payload)
+            state.data.unshift(action.payload)
         })
         builder.addCase(addUser.rejected,(state,action)=>{
             state.loading=false

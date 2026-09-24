@@ -34,7 +34,7 @@ const PostSlice = createSlice({
         })
         builder.addCase(addPost.fulfilled,(state,action)=>{
             state.loading=false
-            state.data.push(action.payload)
+            state.data.unshift(action.payload)
         })
         builder.addCase(addPost.rejected,(state,action)=>{
             state.loading=false

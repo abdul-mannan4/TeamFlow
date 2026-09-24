@@ -13,9 +13,10 @@ const loading=useAppSelector((state)=>state.users.loading)
 const error=useAppSelector((state)=>state.users.error)
 
 useEffect(()=>{
-    
-    dispatch(fetchUsers({page,limit}))
-},[dispatch,page,limit])
+    if(users.length === 0){
+        dispatch(fetchUsers({page,limit}))
+    }
+},[dispatch,page,limit,users.length])
 
 const createUser=async(
     user:Omit<User,"id">

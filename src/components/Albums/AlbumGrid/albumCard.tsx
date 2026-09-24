@@ -5,6 +5,7 @@ import { LucideFolderOpen, LucidePencil, LucideTrash2, LucideExternalLink } from
 import Link from 'next/link';
 import { useAlbums } from '@/src/hooks/useAlbums';
 import EditAlbumCard from '../EditAlbum/editAlbumCard';
+import ConfirmModal from '../../SharedComponents/ConfirmModal/confirmModal';
 
 type Props = {
   album: Albums;
@@ -14,15 +15,19 @@ type Props = {
 
 export default function AlbumCard({ album, authorName = "Unknown", photoCount = 0 }: Props) {
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { deleteAlbum } = useAlbums();
 
-  const handleDelete = async () => {
-    if (confirm(`Are you sure you want to delete "${album.title}"?`)) {
-      try {
-        await deleteAlbum(album.id);
-      } catch (err) {
-        console.error("Failed to delete album:", err);
-      }
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteAlbum(album.id);
+      setIsDeleteOpen(false);
+    } catch (err) {
+      console.error("Failed to delete album:", err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -44,7 +49,7 @@ export default function AlbumCard({ album, authorName = "Unknown", photoCount = 
                 <LucidePencil size={12} className="2xl:w-4 2xl:h-4" />
               </button>
               <button
-                onClick={handleDelete}
+                onClick={() => setIsDeleteOpen(true)}
                 className='p-1.5 2xl:p-2 bg-white/90 text-slate-500 hover:text-red-500 rounded-md shadow-sm transition-colors cursor-pointer'
                 title='Delete'
                 type='button'
@@ -76,6 +81,15 @@ export default function AlbumCard({ album, authorName = "Unknown", photoCount = 
       </div>
 
       {isEditOpen && <EditAlbumCard album={album} setIsOpen={setIsEditOpen} />}
+
+      <ConfirmModal
+        isOpen={isDeleteOpen}
+        title="Delete Album"
+        message={`Are you sure you want to delete "${album.title}"?`}
+        isLoading={isDeleting}
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setIsDeleteOpen(false)}
+      />
     </>
   )
 }

@@ -111,6 +111,7 @@ const endIndex = Math.min(startIndex + itemsPerPage, totalUsers);
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
+        loading={loading}
       />
 
       {isOpen && 

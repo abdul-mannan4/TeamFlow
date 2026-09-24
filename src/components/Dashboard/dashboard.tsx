@@ -12,26 +12,7 @@ import { fetchAlbums } from "@/src/redux/features/albums/albumThunk";
 import { fetchPhotos } from "@/src/redux/features/photos/photoThunk";
 import { fetchComments } from "@/src/redux/features/comments/commentThunk";
 
-const getGreeting = () => {
-  const hour = new Date().getHours();
-
-  if (hour >= 5 && hour < 12) {
-    return "Good morning";
-  }
-
-  if (hour >= 12 && hour < 17) {
-    return "Good afternoon";
-  }
-
-  if (hour >= 17 && hour < 21) {
-    return "Good evening";
-  }
-
-  return "Good night";
-};
-
 export default function Dashboard() {
-  const grettings=getGreeting();
   const dispatch = useAppDispatch();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -54,19 +35,19 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col p-4 sm:p-6 gap-5 sm:gap-6  w-full">
+    <div className="flex flex-col p-4 sm:p-6 gap-5 sm:gap-6 max-w-7xl mx-auto w-full">
       <PageHeader
-        title={`${grettings}, Team`}
+        title="Good morning, Team"
         subtitle="Here's what's happening across your workspace."
         action={
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="flex items-center gap-2 border border-slate-200 bg-white rounded-lg px-3.5 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer disabled:opacity-60 "
+            className="flex items-center gap-2 border border-slate-200 bg-white rounded-lg px-3.5 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-xs cursor-pointer disabled:opacity-60"
           >
             <RefreshCw
               size={16}
-              className={`transition-transform text-slate-500 hover:rotate-180${
+              className={`transition-transform text-slate-500 ${
                 isRefreshing ? "animate-spin text-indigo-600" : ""
               }`}
             />

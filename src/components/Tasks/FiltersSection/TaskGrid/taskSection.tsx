@@ -3,16 +3,18 @@ import React from 'react'
 import type { Todos } from '@/src/types/todo';
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import TaskCard from './taskCard';
+import { TaskSkeleton } from '../../../SharedComponents/Skeletons/skeletons';
 
 type Props = {
   tasks: Todos[];
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  totalUsers:number
+  totalUsers: number;
+  loading?: boolean;
 };
 
-export default function TaskSection({ tasks, totalPages, currentPage, setCurrentPage,totalUsers }: Props) {
+export default function TaskSection({ tasks, totalPages, currentPage, setCurrentPage, totalUsers, loading }: Props) {
 
   const firstPage = Math.max(1, Math.min(currentPage, totalPages - 1));
   const windowPages = [firstPage, firstPage + 1].filter((p) => p <= totalPages);
@@ -31,9 +33,15 @@ export default function TaskSection({ tasks, totalPages, currentPage, setCurrent
   return (
     <div className='bg-white rounded-xl border border-slate-100 overflow-hidden w-full'>
       <div className='divide-y divide-slate-50'>
-        {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+        {loading && tasks.length === 0 ? (
+          Array.from({ length: 8 }).map((_, i) => <TaskSkeleton key={i} />)
+        ) : tasks.length === 0 ? (
+          <div className="py-12 text-center text-sm text-slate-500 font-medium">No tasks found</div>
+        ) : (
+          tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))
+        )}
       </div>
 
       <div className='border-t border-slate-100 px-4 sm:px-5 2xl:px-6 py-3 2xl:py-4 flex flex-col sm:flex-row items-center justify-between gap-3'>

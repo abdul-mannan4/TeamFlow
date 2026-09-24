@@ -1,10 +1,12 @@
 "use client"
 import type { Todos } from '@/src/types/todo'
-import { LucideCircleCheck, Circle, LucidePencil, LucideTrash2 } from 'lucide-react'
+import { LucideCircleCheck, Circle, LucidePencil, LucideTrash2, Loader2 } from 'lucide-react'
 import { useUsers } from '@/src/hooks/useUsers'
 import { useTodos } from '@/src/hooks/useTodos'
 import { useState } from 'react'
 import EditTaskCard from '../../EditTask/editTaskCard'
+
+import ConfirmModal from '../../../SharedComponents/ConfirmModal/confirmModal'
 
 type Props={
     task:Todos
@@ -12,6 +14,9 @@ type Props={
 
 export default function TaskCard({task}:Props) {
     const [isEditOpen, setIsEditOpen] = useState(false)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
+    const [isToggling, setIsToggling] = useState(false)
     const { users } = useUsers()
     const { deleteTask, updateTask } = useTodos()
 
@@ -20,6 +25,7 @@ export default function TaskCard({task}:Props) {
     const initial = authorName?.split(" ").map((word) => word[0]).slice(0, 2).join("")
 
     const handleToggleComplete = async () => {
+        setIsToggling(true)
         try {
             await updateTask(task.id, {
                 ...task,
@@ -27,16 +33,20 @@ export default function TaskCard({task}:Props) {
             })
         } catch (err) {
             console.error("Failed to toggle task:", err)
+        } finally {
+            setIsToggling(false)
         }
     }
 
-    const handleDelete = async () => {
-        if (confirm(`Are you sure you want to delete "${task.title}"?`)) {
-            try {
-                await deleteTask(task.id)
-            } catch (err) {
-                console.error("Failed to delete task:", err)
-            }
+    const handleDeleteConfirm = async () => {
+        setIsDeleting(true)
+        try {
+            await deleteTask(task.id)
+            setIsDeleteOpen(false)
+        } catch (err) {
+            console.error("Failed to delete task:", err)
+        } finally {
+            setIsDeleting(false)
         }
     }
 
@@ -44,12 +54,17 @@ export default function TaskCard({task}:Props) {
         <>
             <div className='flex items-center gap-4 px-5 2xl:px-6 py-3.5 2xl:py-4.5 hover:bg-slate-50/70 transition-colors group w-full'>
                 <button 
-                  className={`shrink-0 transition-colors cursor-pointer ${isCompleted ? "text-green-500" :"text-slate-300 hover:text-indigo-500"}`} 
+                  disabled={isToggling}
+                  className={`shrink-0 transition-colors cursor-pointer disabled:cursor-not-allowed ${isCompleted ? "text-green-500" :"text-slate-300 hover:text-indigo-500"}`} 
                   onClick={handleToggleComplete}
                 >
-                   { isCompleted ? 
-                       <LucideCircleCheck className="w-5 h-5 2xl:w-6 2xl:h-6" /> : <Circle className="w-5 h-5 2xl:w-6 2xl:h-6" />
-                   }
+                   { isToggling ? (
+                       <Loader2 className="w-5 h-5 2xl:w-6 2xl:h-6 animate-spin text-indigo-500" />
+                   ) : isCompleted ? (
+                       <LucideCircleCheck className="w-5 h-5 2xl:w-6 2xl:h-6" />
+                   ) : (
+                       <Circle className="w-5 h-5 2xl:w-6 2xl:h-6" />
+                   )}
                 </button>
                 <span className={`flex-1 text-sm sm:text-base 2xl:text-lg leading-relaxed ${isCompleted ? "line-through text-slate-400":"text-slate-700 font-medium"}`}>
                     {task.title}
@@ -71,7 +86,7 @@ export default function TaskCard({task}:Props) {
                         <LucidePencil size={14} className="2xl:w-4 2xl:h-4" />
                     </button>
                     <button 
-                        onClick={handleDelete}
+                        onClick={() => setIsDeleteOpen(true)}
                         className='p-1.5 2xl:p-2 text-slate-400 cursor-pointer hover:text-red-500 hover:bg-red-50 rounded-md transition-colors'
                         title='Delete'
                     >
@@ -81,6 +96,15 @@ export default function TaskCard({task}:Props) {
             </div>
 
             {isEditOpen && <EditTaskCard task={task} setIsOpen={setIsEditOpen} />}
+
+            <ConfirmModal
+                isOpen={isDeleteOpen}
+                title="Delete Task"
+                message={`Are you sure you want to delete "${task.title}"?`}
+                isLoading={isDeleting}
+                onConfirm={handleDeleteConfirm}
+                onClose={() => setIsDeleteOpen(false)}
+            />
         </>
     )
 }

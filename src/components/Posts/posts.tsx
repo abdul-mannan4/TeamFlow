@@ -99,7 +99,7 @@ export default function MembersComp() {
           </div>
         </div>
       </div>
-      <PostSection posts={paginatedPost} totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <PostSection posts={paginatedPost} totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} loading={postLoading}/>
       {isOpen && <CreatePostCard setIsOpen={setIsOpen}/>}
     </div>
   )

@@ -35,7 +35,7 @@ const todoSlice=createSlice({
         })
         builder.addCase(addTask.fulfilled,(state,action)=>{
             state.loading=false
-            state.data.push(action.payload)
+            state.data.unshift(action.payload)
         })
         builder.addCase(addTask.rejected,(state,action)=>{
             state.loading=false

@@ -12,13 +12,14 @@ export default function CreateAlbumCard({setIsOpen}:{setIsOpen:React.Dispatch<Re
 
     const {albums,createAlbum,loading:albumLoading,error:albumError}=useAlbums();
     const {users,loading:userLoading,error:userError}=useUsers();
+    const [validationError, setValidationError] = useState<string | null>(null);
     const [formData,setFormData]=useState({
          userId:0,
         title:""
     })
     
     const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-
+            setValidationError(null);
             const {name,value}=e.target
             setFormData((prev)=>({
                 ...prev,
@@ -26,15 +27,14 @@ export default function CreateAlbumCard({setIsOpen}:{setIsOpen:React.Dispatch<Re
             }))
     }
 
-
     const handleSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
         if (!formData.userId || formData.userId === 0) {
-            alert("Please select an author.");
+            setValidationError("Please select an author.");
             return;
         }
         try{
-            const result=await createAlbum(formData)
+            await createAlbum(formData)
             setIsOpen(false);
         }
         catch(error){
@@ -76,7 +76,10 @@ export default function CreateAlbumCard({setIsOpen}:{setIsOpen:React.Dispatch<Re
 
                         }}/>
                     </div>
-                    <CreationBtn setIsOpen={setIsOpen} loading={albumLoading}/>
+                    {validationError && (
+                      <p className="text-xs text-red-600 font-medium">{validationError}</p>
+                    )}
+                    <CreationBtn setIsOpen={setIsOpen} loading={albumLoading} btnText='Create Album' />
                 </form>
 
             </div>

@@ -7,9 +7,12 @@ import { useUsers } from "@/src/hooks/useUsers";
 import { useComments } from "@/src/hooks/useComments";
 import { usePosts } from "@/src/hooks/usePosts";
 import EditPostCard from "../EditPost/editPostCard";
+import ConfirmModal from "../../SharedComponents/ConfirmModal/confirmModal";
 
 export default function PostsCard({ post }: { post: Post }) {
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { users } = useUsers();
   const { comments } = useComments();
   const { deletePost } = usePosts();
@@ -26,13 +29,15 @@ export default function PostsCard({ post }: { post: Post }) {
     .join("")
     .toUpperCase();
 
-  const handleDelete = async () => {
-    if (confirm(`Are you sure you want to delete "${post.title}"?`)) {
-      try {
-        await deletePost(post.id);
-      } catch (err) {
-        console.error("Failed to delete post:", err);
-      }
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true);
+    try {
+      await deletePost(post.id);
+      setIsDeleteOpen(false);
+    } catch (err) {
+      console.error("Failed to delete post:", err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -61,7 +66,7 @@ export default function PostsCard({ post }: { post: Post }) {
                 <LucidePen size={14} className="2xl:w-4 2xl:h-4" />
               </button>
               <button
-                onClick={handleDelete}
+                onClick={() => setIsDeleteOpen(true)}
                 className="p-1.5 2xl:p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors cursor-pointer"
                 title="Delete"
                 type="button">
@@ -88,6 +93,15 @@ export default function PostsCard({ post }: { post: Post }) {
       </div>
 
       {isEditOpen && <EditPostCard post={post} setIsOpen={setIsEditOpen} />}
+
+      <ConfirmModal
+        isOpen={isDeleteOpen}
+        title="Delete Post"
+        message={`Are you sure you want to delete "${post.title}"?`}
+        isLoading={isDeleting}
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setIsDeleteOpen(false)}
+      />
     </>
   );
 }
