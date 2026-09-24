@@ -92,6 +92,7 @@ export default function AlbumsComp() {
         albums={paginatedAlbums}
         authorNameMap={authorName}
         photoCounts={photoCounts}
+        loading={albumLoading}
       />
       {isOpen && <CreateAlbumCard setIsOpen={setIsOpen}/>}
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getUsers, createUser, updateUser, deleteUser } from "@/src/controllers/userController";
+import { getUsers, createUser,updateUser, deleteUser } from "@/src/controllers/userController";
 import type { User } from "@/src/types/users";
 
 export const fetchUsers=createAsyncThunk(

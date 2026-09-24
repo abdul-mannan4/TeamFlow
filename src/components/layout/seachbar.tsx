@@ -11,7 +11,7 @@ export default function Seachbar({width,placeHolder,onChange,value}:{width?:stri
             placeholder={placeHolder}
             onChange={onChange}
             value={value}
-            className="text-base 2xl:text-lg outline-none w-full placeholder:text-gray-400 bg-transparent"
+            className="text-base 2xl:text-lg outline-none w-full placeholder:text-slate-400 text-slate-900 bg-transparent"
           />
         </div>
   )

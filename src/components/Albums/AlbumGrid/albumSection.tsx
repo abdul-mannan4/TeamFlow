@@ -2,6 +2,7 @@ import React from 'react'
 import type { Albums } from '@/src/types/albums';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import AlbumCard from './albumCard';
+import { AlbumCardSkeleton } from '../../SharedComponents/Skeletons/skeletons';
 
 type Props = {
   albums: Albums[];
@@ -10,6 +11,7 @@ type Props = {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   authorNameMap?: Map<number, string>;
   photoCounts?: Record<number, number>;
+  loading?: boolean;
 };
 
 export default function AlbumSection({
@@ -19,6 +21,7 @@ export default function AlbumSection({
   setCurrentPage,
   authorNameMap,
   photoCounts,
+  loading,
 }: Props) {
     
   const firstPage = Math.max(1, Math.min(currentPage, totalPages - 1));
@@ -37,14 +40,22 @@ export default function AlbumSection({
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 2xl:gap-6 w-full'>
-      {albums.map((album) => (
-        <AlbumCard
-          key={album.id}
-          album={album}
-          authorName={authorNameMap?.get(album.userId) ?? "Unknown"}
-          photoCount={photoCounts?.[album.id] ?? 0}
-        />
-      ))}
+      {loading && albums.length === 0 ? (
+        Array.from({ length: 8 }).map((_, i) => <AlbumCardSkeleton key={i} />)
+      ) : albums.length === 0 ? (
+        <div className="col-span-full py-12 text-center text-sm text-slate-500 font-medium bg-white rounded-xl border border-slate-100">
+          No albums found
+        </div>
+      ) : (
+        albums.map((album) => (
+          <AlbumCard
+            key={album.id}
+            album={album}
+            authorName={authorNameMap?.get(album.userId) ?? "Unknown"}
+            photoCount={photoCounts?.[album.id] ?? 0}
+          />
+        ))
+      )}
 
       <div className='col-span-full bg-white rounded-xl border border-slate-100 px-4 sm:px-5 2xl:px-6 py-3 2xl:py-4'>
         <div className='flex items-center justify-center gap-1 flex-wrap'>

@@ -2,15 +2,17 @@ import React from 'react'
 import PostsCard from './postsCard'
 import type { Post } from '@/src/types/post'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { PostCardSkeleton } from '../../SharedComponents/Skeletons/skeletons'
 
 type Props = {
   posts: Post[];
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  loading?: boolean;
 };
 
-export default function PostSection({ posts, totalPages, currentPage, setCurrentPage }: Props) {
+export default function PostSection({ posts, totalPages, currentPage, setCurrentPage, loading }: Props) {
 
   const firstPage = Math.max(1, Math.min(currentPage, totalPages - 1));
   const windowPages = [firstPage, firstPage + 1].filter((p) => p <= totalPages);
@@ -28,9 +30,17 @@ export default function PostSection({ posts, totalPages, currentPage, setCurrent
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5 2xl:gap-6 w-full'>
-      {posts.map((post) => (
-        <PostsCard key={post.id} post={post} />
-      ))}
+      {loading && posts.length === 0 ? (
+        Array.from({ length: 8 }).map((_, i) => <PostCardSkeleton key={i} />)
+      ) : posts.length === 0 ? (
+        <div className="col-span-full py-12 text-center text-sm text-slate-500 font-medium bg-white rounded-xl border border-slate-100">
+          No posts found
+        </div>
+      ) : (
+        posts.map((post) => (
+          <PostsCard key={post.id} post={post} />
+        ))
+      )}
 
       <div className='col-span-full bg-white rounded-xl border border-slate-100 px-4 sm:px-5 2xl:px-6 py-3 2xl:py-4'>
         <div className='flex items-center justify-center gap-1 flex-wrap'>

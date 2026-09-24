@@ -119,6 +119,7 @@ export default function FilterSectionn() {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           totalUsers={filteredTasks.length}
+          loading={todoLoading}
         />
       </div>
     </div>

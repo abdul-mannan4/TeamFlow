@@ -5,9 +5,12 @@ import { LucideEye, LucidePencil, LucideTrash2 } from 'lucide-react'
 import type { User } from '@/src/types/users'
 import { useUsers } from '@/src/hooks/useUsers'
 import EditUserCard from '../EditUser/editUserCard'
+import ConfirmModal from '../../SharedComponents/ConfirmModal/confirmModal'
 
 export default function MemberCard({ user }: { user: User }) {
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const { deleteMember } = useUsers()
 
   const inital = user.name
@@ -17,13 +20,15 @@ export default function MemberCard({ user }: { user: User }) {
     .join("")
     .toUpperCase()
 
-  const handleDelete = async () => {
-    if (confirm(`Are you sure you want to delete ${user.name}?`)) {
-      try {
-        await deleteMember(user.id)
-      } catch (err) {
-        console.error("Failed to delete member:", err)
-      }
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true)
+    try {
+      await deleteMember(user.id)
+      setIsDeleteOpen(false)
+    } catch (err) {
+      console.error("Failed to delete member:", err)
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -66,7 +71,7 @@ export default function MemberCard({ user }: { user: User }) {
                 <LucidePencil size={15} className="2xl:w-4.5 2xl:h-4.5" />
               </button>
               <button 
-                onClick={handleDelete}
+                onClick={() => setIsDeleteOpen(true)}
                 title='Delete'
                 className='p-1.5 2xl:p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors cursor-pointer'
               >
@@ -78,6 +83,15 @@ export default function MemberCard({ user }: { user: User }) {
       </tbody>
 
       {isEditOpen && <EditUserCard user={user} setIsOpen={setIsEditOpen} />}
+
+      <ConfirmModal
+        isOpen={isDeleteOpen}
+        title="Delete Member"
+        message={`Are you sure you want to delete "${user.name}"?`}
+        isLoading={isDeleting}
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setIsDeleteOpen(false)}
+      />
     </>
   )
 }
